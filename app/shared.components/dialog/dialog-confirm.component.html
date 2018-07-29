@@ -1,0 +1,28 @@
+﻿<app-dialog [visible]="visible">
+    <div class="modala-dialog modala-lg">
+        <div class="modala-content">
+            <div class="modala-header">
+                <h4 class="modala-title">{{title}}</h4>
+            </div>
+            <div class="modala-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">{{question}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-success" (click)="onAnswerClicked(false)">No</button>
+                            </div>
+                            <div class="pull-right" style="margin-right:20px;">
+                                <button type="button" class="btn btn-success" (click)="onAnswerClicked(true)">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-dialog>

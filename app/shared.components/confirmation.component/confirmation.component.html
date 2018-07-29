@@ -1,0 +1,22 @@
+﻿<div class="row">
+    <modal #modal
+           title="Confirmation"
+           cancelButtonLabel="Cancel"
+           submitButtonLabel="Confirm"
+           modalClass="modal-lg modal-sm any-other-css-class"
+           [hideCloseButton]="true"
+           [closeOnEscape]="true"
+           [closeOnOutsideClick]="true"
+           (onOpen)="onOpen()"
+           (onClose)="onClose()"
+           (onSubmit)="onSubmit()">
+        <modal-header>
+            <!-- <h1>Confirmation!</h1> -->
+        </modal-header>
+        <modal-content>
+            {{message}}
+        </modal-content>
+        <modal-footer>
+        </modal-footer>
+    </modal>
+</div>

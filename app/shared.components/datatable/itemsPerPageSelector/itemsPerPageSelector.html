@@ -1,0 +1,6 @@
+﻿<ul class="pagination pagination-sm pull-right" ng-reflect-klass="pagination" ng-reflect-ng-class="pagination-sm">
+    <li *ngFor="let itemsPerPage of itemsPerPageList; let i = index"
+        [class]="'pagination-page page-item ' + (i == currentSelection ? 'active' : '')">
+        <a class="page-link" (click)="onClick(i)">{{itemsPerPage}}</a>
+    </li>
+</ul>

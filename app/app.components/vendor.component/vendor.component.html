@@ -1,0 +1,35 @@
+<header></header>
+<form [formGroup]="frmVendor">
+    <div class="panel panel-primary scms">
+        <div class="panel-heading">Manage Vendor</div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <div class="form-group"
+                    [ngClass]="{'has-error': frmVendor.controls.vendorName.invalid && frmVendor.controls.vendorName.dirty}">
+                    <label>Name</label>
+                    <input class="form-control" formControlName="vendorName">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input class="form-control" formControlName="address">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="phoneNo">Phone No.</label>
+                    <input class="form-control" formControlName="phoneNo">
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <button class="pull-right btn btn-primary"
+                        (click)="onCancel()">Cancel</button>
+                <button class="pull-right btn btn-primary"
+                        [ngClass]="{'disabled': frmVendor.invalid}"
+                        (click)="onSave()">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

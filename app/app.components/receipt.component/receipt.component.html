@@ -1,0 +1,148 @@
+<header *ngIf="!isDisabled"></header>
+<form [formGroup]="frmReceipt">
+    <div class="panel panel-primary scms" [ngClass]="{'disabled': mode === 'V'}">
+        <div class="panel-heading">Manage Receipt</div>
+        <div class="panel-body">
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="">Receipt #</label>&nbsp;
+                    <input  class="form-control"
+                            [value]="receiptId"
+                            type="text"
+                            disabled>
+                </div>
+            </div>
+            <div class="col-sm-3">
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="purchaseOrderId">Purchase Order</label>
+                    <ng-select  formControlName="purchaseOrderId"
+                                class="control-label"
+                                [clearable]="false"
+                                bindValue="purchaseOrderId"
+                                bindLabel="purchaseOrderId"
+                                [items]="purchaseOrderList"
+                                [disabled]="false"
+                                (change)="onPurchaseOrderChanged($event)"
+                                placeholder="Select Purchase Order">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="vendorId" style="height: 18px;">Vendor</label>
+                    <ng-select  formControlName="vendorId"
+                                class="control-label"
+                                [clearable]="false"
+                                bindValue="vendorId"
+                                bindLabel="vendorName"
+                                [items]="vendorList"
+                                placeholder="Select Vendor">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="purchaseOrderTotal">PO Total</label>
+                    <input class="form-control" formControlName="purchaseOrderTotal" type="number">
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="purchaseOrderDate">PO Date</label>
+                    <input class="form-control" formControlName="purchaseOrderDate" type="date">
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="purchaseOrderDate">Est. Delivery Date</label>
+                    <input class="form-control" formControlName="estDeliveryDate" type="date">
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="inventoryId" style="height: 18px;">Receiving Inventory</label>
+                    <ng-select  formControlName="inventoryId"
+                                class="control-label"
+                                [items]="inventoryList"
+                                [clearable]="false"
+                                bindValue="inventoryId"
+                                bindLabel="inventoryDescription"
+                                placeholder="Select Inventory">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="receiptDate">Receipt Date</label>
+                    <input class="form-control" formControlName="receiptDate" type="date">
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="shipmentCost">Extra Cost</label>
+                    <input class="form-control" formControlName="extraCost" type="number">
+                </div>
+            </div>
+            
+            <div *ngIf="!isDisabled" class="col-sm-12">
+                <div class="pull-right gap-bottom">
+                    <button type="submit" class="btn btn-primary" (click)="onAddClicked()">Add Item</button>
+                </div>
+            </div>
+                
+            <div class="scrollable">
+                <div style="min-width: 500px">
+                    <datatable  #datatable
+                                [showFilterRow]="false"
+                                [allowEditing]="false"
+                                [allowAddition]="false"
+                                [allowReordering]="false"
+                                [showTotals]="false"
+                                [page]="pageNo"
+                                [disabled]="isDisabled"
+                                (addClicked)="onAddClicked()"
+                                (cellValueChanged)="onCellValueChanged($event)"
+                                (dropdownChanged)="onDropdownChanged($event)"
+                                (tableChanged)="onChangeTable(config)"
+                                (linkClicked)="onLinkClicked($event)"
+                                [tableData]="receiptItems" [columns]="columns">
+                    </datatable>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div *ngIf="!isDisabled" class="form-group">
+                        <button class="pull-right btn btn-primary"
+                                (click)="onCancel()">Cancel</button>
+                        <button class="pull-right btn btn-primary"
+                                [ngClass]="{'disabled': frmReceipt.invalid}"
+                                (click)="onSave()">Save</button>
+                    </div>
+                    <div *ngIf="isDisabled" class="form-group">
+                        <button class="pull-right btn btn-primary"
+                                (click)="onClose()">Close</button>
+                    </div>
+                    </div>
+            </div>    
+        </div>
+    </div>
+</form>
+
+<confirmation   #deleteconfirmation
+                (confirm)="onDeleteConfirm($event)"
+                [message]="'Are you sure you want to delete this record?'">
+</confirmation>

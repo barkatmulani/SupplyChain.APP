@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+.ng .mainmenu .btn {
+    margin: 0px;
+}
+
+.scms .btn {
+    margin-left: 10px;
+    width: 80px;
+}
+
+/* .ng .panel-body {
+    padding: 20px 50px;
+} */
+
+.ng button {
+    margin-left: 20px;
+}
+
+.widebutton {
+    width: 100%;
+}
+
+.ng .actionButton {
+    margin: 5px;
+}
+
+.gap-bottom {
+    padding-bottom: 16px;
+}
+
+.scrollable {
+    width: 100%; overflow-x: auto;
+}

@@ -1,0 +1,27 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<ng4-loading-spinner></ng4-loading-spinner>
+<br/>
+
+<div class="container">
+    <div class="col-md-3">
+        <mainmenu-container class="hidden-xs"></mainmenu-container>
+    </div>
+
+    <div class="col-md-9">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB77_Q5M8FmIkTwV3f9VERH2dJ7oRwf4Q8",
+    authDomain: "supplychain-c79b1.firebaseapp.com",
+    databaseURL: "https://supplychain-c79b1.firebaseio.com",
+    projectId: "supplychain-c79b1",
+    storageBucket: "supplychain-c79b1.appspot.com",
+    messagingSenderId: "740426988853"
+  };
+  firebase.initializeApp(config);
+</script>

@@ -1,0 +1,35 @@
+<header></header>
+<form [formGroup]="frmItem">
+    <div class="panel panel-primary scms">
+        <div class="panel-heading">Manage Item</div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <div class="form-group"
+                    [ngClass]="{'has-error': frmItem.controls.itemDescription.invalid && frmItem.controls.itemDescription.dirty}">
+                    <label for="itemDesc">Item Description</label>
+                    <input class="form-control" formControlName="itemDescription">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="cost">Item Cost</label>
+                    <input class="form-control" formControlName="cost">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="price">Item Price</label>
+                    <input class="form-control" formControlName="price">
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <button class="pull-right btn btn-primary"
+                        (click)="onCancel()">Cancel</button>
+                <button class="pull-right btn btn-primary"
+                        [ngClass]="{'disabled': frmItem.invalid}"
+                        (click)="onSave()">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

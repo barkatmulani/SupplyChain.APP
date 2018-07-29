@@ -1,0 +1,180 @@
+﻿<table class="table table-bordered ng-scope ng-table" ngClass="{{config.className || ''}}"
+       role="grid" style="width: 100%;">
+       <!-- role="grid" style="width: 100%; {{style}}"> -->
+    <thead>
+        <tr *ngFor="let header of headers; let level = index" role="row">
+            <th class="sortable col-sm-1" *ngIf="allowEditing || allowReordering">
+                <a href="" onclick="scroll();return false;" (click)="onIncreaseSortOrderClicked()" *ngIf="!upKeyHidden"><i class="fa fa-chevron-up ng-scope"></i></a>
+                <a href="" onclick="scroll();return false;" (click)="onDecreaseSortOrderClicked()" *ngIf="!downKeyHidden"><i class="fa fa-chevron-down ng-scope"></i></a>
+            </th>
+            <!--                    <i id="supporticon" (click)="removeFilters()" class="fa fa-search" aria-hidden="true"></i>-->
+            <th *ngFor="let column of headers[level]; let colIndex = index"
+                [ngStyle]="{ 'display': (column.hidden ? 'none' : ''), 'width': column.width, 'max-width': column.width }"
+                [ngTableSorting]="config" [column]="column"
+                (headerClicked)="onHeaderClicked(column)"
+                [ngClass]="{ 'sortable': (allowSorting && column.name) }"
+                [attr.rowspan]="column.colspan ? 1 : maxLevel"
+                [attr.colspan]="column.colspan ? column.colspan : 1">
+                <input name="heading_{{level}}_{{colIndex}}"
+                       *ngIf="column.checkable"
+                       type="checkbox"
+                       [checked]="column.checked"
+                       (click)="onHeaderCheckboxClicked($event, column)" />
+                {{column.title}}
+                <i *ngIf="allowSorting && config && column.name && column.sort" class="pull-right fa"
+                   [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}">
+                </i>
+            </th>
+        </tr>
+        <tr *ngIf="showFilterRow">
+            <td style="text-align: center">
+                <img class="funnelIcon" title="Click to clear all search" (click)="onClearFilterClicked()" src="./assets/filtericon.png" />
+            </td>
+            <td *ngFor="let column of columns" [ngStyle]="{ 'display': (column.hidden || column.colspan ? 'none' : '') }">
+                <input *ngIf="column.filtering && !column.activeField" placeholder="{{column.filtering.placeholder}}"
+                       [ngTableFiltering]="column.filtering"
+                       class="form-control"
+                       [(ngModel)]="column.filtering.filterString"
+                       (tableChanged)="onChangeTable(config)" />
+                <select class="form-control"
+                        *ngIf="column.activeField"
+                        [(ngModel)]="column.filtering.filterString"
+                        [ngTableFiltering]="column.filtering"
+                        (tableChanged)="onChangeTable(config)">
+                    <option value="">-- All --</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </td>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <!--ngClass="{{row.invalidCount > 0 ? 'errorRow' : row.className}}"-->
+        <tr [ngStyle]="{'display': (rows && rows.length > 0) ? 'none' : ''}" rowspan="3">
+            <td [attr.colspan]="columns.length" style="text-align: center;">No Records Found</td>
+        </tr>
+        <tr *ngFor="let row of rows; let rowIndex = index"
+            ngClass="{{row.className}}"
+            [ngStyle]="{'display': row.subForm && !row.visible ? 'none' : ''}"
+            style="height: 40px;">
+
+            <td [ngStyle]="{'display': row.subForm ? '' : 'none'}" [attr.colspan]="subFormColSpan">
+                <row-detail *ngIf="row.subForm" #container id="detail_{{(rowIndex - 1) / 2}}"></row-detail>
+            </td>
+
+            <td class="editbtnalign1" header="'filter.html'" *ngIf="!row.subForm && (allowEditing || allowReordering)" style="text-align: center;">
+                <input type="checkbox" checked={{row.checked}} name="" (click)="onCheckboxClicked(row[idColumn] || row.id)" *ngIf="allowReordering" [disabled]="disabled">
+                <a *ngIf="allowEditing" href=""><i title="Click to Edit" class=" fa fa-pencil-square-o" onclick="scroll();return false;" (click)="onEditClicked(row[idColumn] || row.id)"></i></a>
+            </td>
+
+            <td *ngFor="let column of columns; let colIndex = index"
+                [ngStyle]="{ 'display': (column.hidden || row.subForm || column.colspan > 1 ? 'none' : ''),
+                             'width': column.width, 'max-width': column.width,
+                             'vertical-align': 'middle', 'background-color':
+                             (validationColor && isInvalidCell(row.rowNo, colIndex) ? validationColor : '') }"
+                (click)="cellClick($event, row, column.name || column.key)"
+                title="{{cellValidationMatrix && cellValidationMatrix[colIndex] && cellValidationMatrix[colIndex][row.rowNo] && cellValidationMatrix[colIndex][row.rowNo].message ? cellValidationMatrix[colIndex][row.rowNo].message : row[tooltipColumn]}}"
+                [ngClass]="{ 'subrow': row.detail && (!row.heading || column.key),
+                                     'subheading': row.detail && row.heading && !column.key,
+                                     'errorRow': isInvalidCell(row.rowNo, colIndex) }">
+                <div *ngIf="row.detail"
+                     [ngStyle]="{ 'text-align' : (column.alignment ? column.alignment :
+                                    ((column.format === 'currency') || (column.format === 'currencyNeg') || (column.format === 'number') ? 'right' : '')) }"
+                     [innerHtml]="column.name ? sanitize(getData(row, column.name) | format: column.format) : ''">
+                </div>
+
+                <div *ngIf="column.activeField && !row.detail">
+                    <label class="switch">
+                        <input type="checkbox" checked="{{row[column.name] ? 'checked' : ''}}"
+                               [disabled]="column.disabled || disabled"
+                               (change)="onSwitchChanged(row, column.name)" />
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+                <div *ngIf="!column.activeField && !column.key && !(column.itemsProp || column.items) && !column.type && !row.detail"
+                     [ngStyle]="{ 'text-align' : (column.alignment ? column.alignment :
+                                    ((column.format === 'currency') || (column.format === 'currencyNeg') || (column.format === 'number') ? 'right' : '')) }"
+                     [innerHtml]="sanitize(getData(row, column.name) | format: column.format)">
+                </div>
+                <div *ngIf="column.type && !row.detail">
+                    <input [ngModel]="row[column.name]"
+                           class="form-control"
+                           type="{{column.type}}"
+                           step="{{column.step}}"
+                           title="{{column.showTooltip ? (column.tooltip ? column.tooltip : row[column.name]) : ''}}"
+                           [disabled]="column.disabled || disabled"
+                           (ngModelChange)="onChange(row.rowNo, colIndex, $event)"
+						   (blur)="onBlur(row.rowNo, colIndex, $event)"
+                           [ngStyle]="{ 'text-align' : (column.alignment ? column.alignment :
+                                    ((column.format === 'currency') || (column.format === 'currencyNeg') || (column.format === 'number') ? 'right' : '')) }"
+                           min="0" />
+                </div>
+                <div *ngIf="(column.itemsProp || column.items) && !row.detail">
+                    <dropdown name="dropdown"
+                              [title]="'Items'"
+                              [showTooltip]="column.showTooltip"
+                              [showLabel]="false"
+                              [(ngModel)]="row[column.name]"
+                              [items]="column.itemsProp ? row[column.itemsProp] : column.items"
+                              [disabled]="column.disabled || disabled"
+                              (onSelected)="onChangeDropdown($event, row.rowNo, column.name, colIndex)">
+                    </dropdown>
+                </div>
+                <imagelink *ngIf="column.key && !row.detail"
+                           [name]="column.key"
+                           [rowId]="row[idColumn] || row.id"
+                           [tooltip]="column.tooltip"
+                           [imageUrl]="column.imageUrl"
+                           (linkClicked)="onLinkClicked($event, rowIndex)">
+                </imagelink>
+            </td>
+        </tr>
+		<tr *ngIf="showTotals || allowAddition" class="totalRow">
+			<td [ngStyle]="{ 'vertical-align': 'middle' }"
+				[attr.colspan]="addButtonSpan - 1"
+				*ngIf="allowAddition">
+				<button type="button"
+						[ngClass]="{ 'disabled': !allRowsValid }"
+						(click)="onAddClicked()"
+						[disabled]="disabled"
+						class="btn btn-success addbtn ng-scope">
+					Add
+				</button>
+			</td>
+			<td [ngStyle]="{ 'vertical-align': 'middle' }"
+				[attr.colspan]="addButtonSpan">
+				<span class="pull-right" *ngIf="showTotals">Total:</span>
+			</td>
+			<td *ngFor="let column of columns.slice((addButtonSpan) + hiddenColumns); let i = index"
+				class="textRight"
+				[ngStyle]="{ 'display': (column.hidden || column.colspan ? 'none' : ''), 'vertical-align': 'middle' }">
+				<div>
+					{{ !totals[column.name] || totals[column.name] === 'Total:' ? totals[column.name] : (totals[column.name] | format: 'currency') }}
+				</div>
+			</td>
+		</tr>
+
+
+        <!--<tr *ngIf="showTotals || allowAddition" class="totalRow">
+            <td *ngFor="let column of columns; let i = index"
+                class="textRight"
+                [ngStyle]="{ 'display': (column.hidden || column.colspan ? 'none' : ''), 'vertical-align': 'middle' }">
+
+                <button *ngIf="i === 0 && allowAddition"
+                        type="button"
+                        [ngClass]="{ 'disabled': !allRowsValid }"
+                        (click)="onAddClicked()"
+                        [disabled]="column.disabled || disabled"
+                        class="btn btn-success addbtn pull-right ng-scope">
+                    Add
+                </button>
+
+                <div>
+                    {{ !totals[column.name] || totals[column.name] === 'Total:' ? totals[column.name] : (totals[column.name] | format: 'currency') }}
+                </div>
+            </td>
+        </tr>-->
+
+    </tbody>
+</table>

@@ -1,0 +1,1 @@
+{"version":3,"file":"ng-table-rowdetail.component.js","sourceRoot":"","sources":["ng-table-rowdetail.component.ts"],"names":[],"mappings":";;;;;;;;AAAA,sCAA4D;AAQ5D;IAAA;IAEA,CAAC;IAFY,yBAAyB;QANrC,gBAAS,CAAC;YACP,QAAQ,EAAE,MAAM,CAAC,EAAE;YACnB,QAAQ,EAAE,YAAY;YACtB,WAAW,EAAE,mCAAmC;SACnD,CAAC;OAEW,yBAAyB,CAErC;IAAD,gCAAC;CAAA,AAFD,IAEC;AAFY,8DAAyB"}

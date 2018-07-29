@@ -1,0 +1,45 @@
+<header></header>
+<div class="panel panel-primary scms">
+    <div class="panel-heading">{{mode === 'L' ? 'Manage' : 'Post'}} Inventory Receipt</div>
+    <div class="panel-body">
+        <div *ngIf="mode === 'L'" class="col-sm-12">
+            <div class="pull-right gap-bottom">
+                <button type="submit" class="btn btn-primary" (click)="onAddClicked()">Add New</button>
+            </div>
+        </div>
+
+        <div class="scrollable">
+            <datatable  #datatable
+                        [showFilterRow]="false"
+                        [allowEditing]="false"
+                        [allowReordering]="false"
+                        [page]="pageNo"
+                        (tableChanged)="onChangeTable(config)"
+                        (pageChanged)="onPageChanged($event)"
+                        (linkClicked)="onLinkClicked($event)"
+                        (cellClicked)="onCellClick($event)"
+                        [tableData]="rows" [columns]="columns">
+            </datatable>
+        </div>
+    </div>
+</div>
+
+<confirmation   #deleteconfirmation
+                [message]="'Are you sure you want to delete this record?'"
+                (confirm)="onDeleteConfirm($event)">
+</confirmation>
+
+<confirmation   #postconfirmation
+                [message]="'Are you sure you want to post this record?'"
+                (confirm)="onPostConfirm($event)">
+</confirmation>
+
+<app-dialog [(visible)]="poDialogVisible">
+    <div class="modal-body">
+        <receipt    [receiptId]="receiptId"
+                    [mode]="'V'"
+                    (click)="onClose()"
+                    >
+        </receipt>
+    </div>
+</app-dialog>

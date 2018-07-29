@@ -1,0 +1,30 @@
+<header></header>
+<div class="panel panel-primary scms">
+    <div class="panel-heading">Manage Item</div>
+    <div class="panel-body">
+        <div class="col-sm-12">
+            <div class="pull-right gap-bottom">
+                <button type="submit" class="btn btn-primary" (click)="onAddClicked()">Add New</button>
+            </div>
+        </div>
+        
+        <div class="scrollable">
+            <datatable #datatable
+                    [showFilterRow]="false"
+                    [allowEditing]="false"
+                    [allowReordering]="false"
+                    [page]="pageNo"
+                    (tableChanged)="onChangeTable(config)"
+                    (pageChanged)="onPageChanged($event)"
+                    (linkClicked)="onLinkClicked($event)"
+                    (cellClicked)="onCellClick($event)"
+                    [tableData]="rows" [columns]="columns">
+            </datatable>
+        </div>
+    </div>
+</div>
+
+<confirmation   #deleteconfirmation
+                [message]="'Are you sure you want to delete this record?'"
+                (confirm)="onDeleteConfirm($event)">
+</confirmation>

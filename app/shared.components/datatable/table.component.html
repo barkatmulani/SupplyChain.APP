@@ -1,0 +1,60 @@
+﻿<div class="col-xs-12">
+    <ng-table [config]="config"
+            (tableChanged)="onChangeTable(config)"
+            (sortChanged)="onSortTable(config)"
+            (cellClicked)="onCellClick($event)"
+            (editClicked)="onEditClicked($event)"
+            (addClicked)="onAddClicked()"
+            (switchChanged)="onSwitchChanged($event)"
+            (dropdownChanged)="onDropdownChanged($event)"
+            (increaseSortOrderClicked)="onIncreaseSortOrderClicked($event)"
+            (decreaseSortOrderClicked)="onDecreaseSortOrderClicked($event)"
+            (linkClicked)="onLinkClicked($event)"
+            (headerChecked)="onHeaderChecked($event)"
+            (cellValueChanged)="onCellValueChanged($event)"
+            (blur)="onBlur($event)"
+            [checkedId]="checkedId"
+            [allowEditing]="allowEditing"
+            [allowReordering]="allowReordering"
+            [allowSorting]="allowSorting"
+            [allowSelection]="allowSelection"
+            [allowMultiSelect]="allowMultiSelect"
+            [allowAddition]="allowAddition"
+            [disabled]="disabled"
+            [showFilterRow]="showFilterRow"
+            [rows]="rows" [columns]="columns"
+            [showTotals]="showTotals"
+            [tooltipColumn]="tooltipColumn"
+            [validationColor]="validationColor"
+            [idColumn]="idColumn"
+            [subFormColSpan]="subFormColSpan"
+            [style]="style"
+            [hideZeroTotals]="hideZeroTotals">
+    </ng-table>
+</div>
+
+<div class="col-xs-12 col-sm-6">
+    <div [ngStyle]="{ 'display': showPaging ? '' : 'none' }">
+        <pagination #pagination
+                    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+                    [boundaryLinks]="true"
+                    [directionLinks]="true"
+                    [(ngModel)]="page"
+                    [totalItems]="length"
+                    [itemsPerPage]="itemsPerPage"
+                    [maxSize]="maxSize"
+                    [boundaryLinks]="true"
+                    [rotate]="false"
+                    (pageChanged)="onChangeTable(config, $event)"
+                    (numPages)="onPageCountChanged($event)">
+        </pagination>
+    </div>
+
+        <!--<pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</<!--<pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>-->
+    <itemsperpageselector #itemsPerPageSelector
+                          class="col-xs-12 col-sm-6"
+                          [ngStyle]="{'display': (totalRows > 10) || (tableData && tableData.length > 10) ? '' : 'none'}"
+                          (itemsPerPageChanged)="onItemsPerPageChanged($event)">
+    </itemsperpageselector>
+
+</div>

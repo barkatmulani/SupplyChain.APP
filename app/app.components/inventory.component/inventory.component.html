@@ -1,0 +1,45 @@
+<header></header>
+<form [formGroup]="frmInventory">
+    <div class="panel panel-primary scms">
+        <div class="panel-heading">Manage Inventory</div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <div class="form-group"
+                    [ngClass]="{'has-error': frmInventory.controls.inventoryDescription.invalid && frmInventory.controls.inventoryDescription.dirty}">
+                    <label for="inventoryDesc">Inventory Description</label>
+                    <input class="form-control" formControlName="inventoryDescription">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input class="form-control" formControlName="address">
+                </div>
+            </div>
+
+            <div class="scrollable">
+                <div style="min-width: 500px">
+                    <datatable  #datatable
+                                [disabled]="isDisabled"
+                                [showFilterRow]="false"
+                                [allowEditing]="false"
+                                [allowAddition]="false"
+                                [allowReordering]="false"
+                                [showTotals]="false"
+                                [page]="pageNo"
+                                (tableChanged)="onChangeTable(config)"
+                                [tableData]="items" [columns]="columns">
+                    </datatable>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <button class="pull-right btn btn-primary"
+                        (click)="onCancel()">Cancel</button>
+                <button class="pull-right btn btn-primary"
+                        [ngClass]="{'disabled': frmInventory.invalid}"
+                        (click)="onSave()">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,15 @@
+﻿<label *ngIf="showLabel" class="control-label col-sm-3 NODIndexlabel" for="lbl">{{title}}</label>
+<div [ngClass]="{'col-sm-8': showLabel}">
+    <select class="form-control"
+            [(ngModel)]="value"
+            [disabled]="((items && (items.length === 0))) || disabled"
+            title="{{tooltip}}"
+            (change)="onChanged()">
+        <option value="">Select {{title}}</option>
+        <option *ngFor="let item of items"
+                [title]="(item && item.tooltip) ? item.tooltip : ''"
+                [ngValue]="item.value"
+                [selected]="item.value == selectedValue ? 'selected' : ''">{{item.text}}
+        </option>
+    </select>
+</div>
