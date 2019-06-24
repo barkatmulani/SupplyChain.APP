@@ -1,5 +1,4 @@
-# SupplyChain.APP
-Supply Chain Application
+#Supply Chain Management System
 
 A responsive website developed using Angular 6 / .NET Core 2 / SQL Server 2015.
 
